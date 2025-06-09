@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DataPulse — COVID-19 Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="container my-4">
+    <h1 class="mb-4 text-center">DataPulse — COVID-19 Dashboard</h1>
+
+    <form id="controls-form" class="row g-3 mb-4 justify-content-center">
+      <div class="col-md-4">
+        <label for="country-select" class="form-label">Select Country:</label>
+        <select id="country-select" class="form-select" aria-label="Select Country">
+          {% for c in countries %}
+            <option value="{{ c }}" {% if c == selected_country %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label for="period-select" class="form-label">Select Time Range:</label>
+        <select id="period-select" class="form-select" aria-label="Select Time Range">
+          <option value="3M">Last 3 Months</option>
+          <option value="6M">Last 6 Months</option>
+          <option value="1Y" selected>Current Year</option>
+          <option value="2Y">Last 2 Years</option>
+          <option value="5Y">Last 5 Years</option>
+          <option value="ALL">All Data</option>
+        </select>
+      </div>
+    </form>
+
+    <div id="loader" class="text-primary text-center my-3" style="display:none;">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div>Loading data...</div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="h5 mb-0">Summary Stats</h2>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Date:</strong> <span id="stat-date">{{ stats.date }}</span></li>
+        <li class="list-group-item"><strong>Total Cases:</strong> <span id="stat-total-cases">{{ stats.total_cases }}</span></li>
+        <li class="list-group-item"><strong>New Cases:</strong> <span id="stat-new-cases">{{ stats.new_cases }}</span></li>
+        <li class="list-group-item"><strong>Total Vaccinations:</strong> <span id="stat-total-vaccinations">{{ stats.total_vaccinations }}</span></li>
+        <li class="list-group-item"><strong>People Vaccinated per 100:</strong> <span id="stat-people-vaccinated">{{ stats.people_vaccinated_per_hundred }}</span></li>
+      </ul>
+    </div>
+
+    <div class="text-center mb-5">
+      <img id="covid-plot" src="{{ plot_url }}" alt="COVID-19 Data Plot" class="img-fluid border rounded shadow-sm" />
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Main JS -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
